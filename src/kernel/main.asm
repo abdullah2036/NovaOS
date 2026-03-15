@@ -45,6 +45,6 @@ main:           ;data seg
 
 msg: db 'hello my OS', ENDL,  0
 
-times 510-($-$$) db 0
+times 510-($-$$) db 0  ;msg length.. i guess?
 dw 0xAA55
 
