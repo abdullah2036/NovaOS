@@ -70,6 +70,38 @@ main:           ;data seg
 .halt:
     jmp .halt
 
+
+lba_to_chs:  ;convert lba to chs addr
+
+    push ax
+    push dx
+    xor dx, dx
+    div word [bdb_sectors_per_track]    ; ax = lba / sectors_per_track
+    inc dx
+    mov cx, dx
+
+    xor dx, dx
+    div word [bdb_heads]
+
+    mov dh, dl 
+    mov ch, al
+    shl ah, 6
+    or cl, ah
+
+    pop ax
+    mov dl, al
+    pop ax
+    ret
+
+
+disk_read:
+    push cx
+    call lba_to_chs
+    pop ax
+    
+
+
+
 msg: db 'hello novaOS!', ENDL,  0
 
 times 510-($-$$) db 0  ;msg length
